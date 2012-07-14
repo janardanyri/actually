@@ -45,3 +45,19 @@
        -o-transition-property: left, right, top;
           transition-property: left, right, top;
 }
+
+/**** Corner stamp ****/
+
+.highlighted {
+	left: 300px;
+  width: 280px;
+  height: 340px;
+  padding: 10px;
+  margin: 10px;
+  position: absolute;
+  background: red;
+  color: white;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+}

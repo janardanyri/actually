@@ -18,8 +18,10 @@ if (Meteor.is_client) {
             duration: 150,
             easing: 'linear',
             queue: false
-          }
+          },
+         cornerStampSelector: '.highlighted'
         });
+
       });
     });
     // return nothing
