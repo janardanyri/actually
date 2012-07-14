@@ -12,10 +12,10 @@ if (Meteor.is_client) {
         $('#photofeed').masonry({
           // options
           itemSelector : '.photo',
-          columnWidth : 240,
+          columnWidth : 0,
           isAnimated: true,
           animationOptions: {
-            duration: 300,
+            duration: 50,
             easing: 'linear',
             queue: false
           }
@@ -27,6 +27,15 @@ if (Meteor.is_client) {
 
   Template.photo.events = {
     'click': function () {
+      
+       if(Session.get("highlighted")) {
+          $('#'+Session.get("highlighted")).animate({width:220}, 50);
+        }
+       if(Session.get("highlighted") != this._id) {
+         $('#'+this._id).animate({width:500}, 50);
+         Session.set("highlighted", this._id)
+      }
+      $('#photofeed').masonry('reload')
     }
   }
 }

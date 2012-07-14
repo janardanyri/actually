@@ -11,7 +11,7 @@
   (Photo feed template placeholder)
   <div id="photofeed">
     {{#each photos}}
-    	{{> photo}}
+      {{> photo}}
       {{photofeed_callback}}
     {{/each}}
   </div>
@@ -22,7 +22,7 @@
 </template>
 
 <template name="photo">
-  <div class="photo">
+  <div class="photo" id="{{_id}}">
     <img src="{{url}}" />
   </div>
 </template>
