@@ -8,9 +8,10 @@ if (Meteor.is_client) {
 
   Template.photofeed.photofeed_callback = function () {
     Meteor.defer(function () {
-      $('#container').imagesLoaded(function(){
-        $('#container').masonry({
+      $('#photofeed').imagesLoaded(function(){
+        $('#photofeed').masonry({
           // options
+          isAnimated: true,
           itemSelector : '.photo',
           columnWidth : 240
         });
