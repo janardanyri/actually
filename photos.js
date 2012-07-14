@@ -11,9 +11,14 @@ if (Meteor.is_client) {
       $('#photofeed').imagesLoaded(function(){
         $('#photofeed').masonry({
           // options
-          isAnimated: true,
           itemSelector : '.photo',
-          columnWidth : 240
+          columnWidth : 240,
+          isAnimated: true,
+          animationOptions: {
+            duration: 300,
+            easing: 'linear',
+            queue: false
+          }
         });
       });
     });
