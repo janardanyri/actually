@@ -15,7 +15,7 @@ if (Meteor.is_client) {
           columnWidth : 0,
           isAnimated: true,
           animationOptions: {
-            duration: 50,
+            duration: 150,
             easing: 'linear',
             queue: false
           }
@@ -29,11 +29,21 @@ if (Meteor.is_client) {
     'click': function () {
       
        if(Session.get("highlighted")) {
-          $('#'+Session.get("highlighted")).animate({width:220}, 50);
-        }
+          shrinkPhoto = $('#'+Session.get("highlighted"))
+          //shrinkPhoto.css('margin','0 -300px 0 -300px');
+          shrinkPhoto.animate({width:220, margin: 10}, 150, function() {
+            $('#photofeed').masonry('reload')
+           });
+       }
        if(Session.get("highlighted") != this._id) {
-         $('#'+this._id).animate({width:500}, 50);
+         bigPhoto = $('#'+this._id);
+         //bigPhoto.css('margin','0 300px 0 300px');
+         bigPhoto.animate({width:500, margin: 10}, 150, function() {
+           $('#photofeed').masonry('reload')
+         });
          Session.set("highlighted", this._id)
+      } else {
+        Session.set("highlighted", null);
       }
       $('#photofeed').masonry('reload')
     }
