@@ -1,2 +1,18 @@
 /* CSS declarations go here */
-/* test commit */
+
+#container {
+    float: left;
+    width: 70%;
+}
+#sidebar {
+    float: right;
+    width: 30%;
+}
+.photo {
+  width: 220px;
+  margin: 10px;
+  float: left;
+}
+.photo img {
+  width: 100%;
+}
