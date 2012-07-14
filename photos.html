@@ -7,6 +7,8 @@
   {{#if buttonpress}}
     <div id="testdiv">{{buttonpress}}</div>
   {{/if}}
+
+  {{> photofeed}}
 </body>
 
 <template name="hello">
@@ -17,6 +19,9 @@
 
 <template name="photofeed">
   (Photo feed template placeholder)
+  {{#each photos}}
+  	{{> photo}}
+  {{/each}}
 </template>
 
 <template name="selectedphotos">
@@ -25,6 +30,6 @@
 
 <template name="photo">
   <div class="photo">
-    <img src="broken.jpg" />
+    <img src="{{url}}" />
   </div>
 </template>
