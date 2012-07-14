@@ -48,16 +48,23 @@
 
 /**** Corner stamp ****/
 
+.corner-stamp {
+
+}
+
+#dummy {
+	width: 0px;
+	height: 0px;
+}
+
+/*  */
 .highlighted {
-	left: 300px;
+/*	left: 300px;
   width: 280px;
-  height: 340px;
+  height: 340px; */
   padding: 10px;
   margin: 10px;
-  position: absolute;
-  background: red;
-  color: white;
-  -webkit-border-radius: 5px;
-     -moz-border-radius: 5px;
-          border-radius: 5px;
+  /* position: absolute; */
+	background-color: red;
+	border: 2px solid black;
 }

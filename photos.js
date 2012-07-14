@@ -19,7 +19,7 @@ if (Meteor.is_client) {
             easing: 'linear',
             queue: false
           },
-         cornerStampSelector: '.highlighted'
+         cornerStampSelector: '.corner-stamp'
         });
 
       });
@@ -29,25 +29,33 @@ if (Meteor.is_client) {
 
   Template.photo.events = {
     'click': function () {
+      $('#dummy').removeClass('corner-stamp');
+
+      photofeed = $('#photofeed');
       
-       if(Session.get("highlighted")) {
+       if(Session.get("highlighted")) { // We have an existing blown up image
           shrinkPhoto = $('#'+Session.get("highlighted"))
           //shrinkPhoto.css('margin','0 -300px 0 -300px');
+          shrinkPhoto.removeClass('corner-stamp');
+          shrinkPhoto.removeClass('highlighted');
           shrinkPhoto.animate({width:220, margin: 10}, 150, function() {
-            $('#photofeed').masonry('reload')
+            photofeed.masonry('reload')
            });
        }
-       if(Session.get("highlighted") != this._id) {
+       if(Session.get("highlighted") != this._id) { // We're blowing up a new image
          bigPhoto = $('#'+this._id);
          //bigPhoto.css('margin','0 300px 0 300px');
+         bigPhoto.addClass('corner-stamp')
+         bigPhoto.addClass('highlighted')
          bigPhoto.animate({width:500, margin: 10}, 150, function() {
-           $('#photofeed').masonry('reload')
+           photofeed.masonry('reload')
          });
          Session.set("highlighted", this._id)
-      } else {
+      } else { // We're shrinking the highlighted image
         Session.set("highlighted", null);
+       $('#dummy').addClass('corner-stamp');
       }
-      $('#photofeed').masonry('reload')
+      photofeed.masonry('reload')
     }
   }
 }

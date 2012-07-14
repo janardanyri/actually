@@ -40,13 +40,12 @@
 <template name="photofeed">
   (Photo feed template placeholder)
   <div id="photofeed">
+  <div id="dummy" class="corner-stamp">
+  </div>
     {{#each photos}}
       {{> photo}}
       {{photofeed_callback}}
     {{/each}}
-   <div class="highlighted">
-   it's cornerstampy!
-	</div>
   </div>
 </template>
 
