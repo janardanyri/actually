@@ -55,3 +55,35 @@ form {
 	margin-left: 40px;
 	
 }
+
+#photofeed {
+    background-image: url(wood.png);
+    z-index: 5;
+}
+
+#sidebar {
+	background-image: url(texture.png);
+	-webkit-box-shadow: -7px 7px 10px black;
+	-moz-box-shadow: -7px 7px 10px black;
+	box-shadow: -7px 7px 10px black;
+	z-index: -1;
+}
+
+.photo img {
+	margin-top: 10px;
+	padding-top: 10px;
+	background-color; white;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+
+
+
+
+
+
+
+
+
+
