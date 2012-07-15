@@ -14,6 +14,7 @@ if (Meteor.is_client) {
 
   Meteor.startup( function () {
     console.log("Client startup")
+    Session.set("photoSet", "Instagram")
     //Meteor.setInterval(invokeServerImageFetch,20 * 1000);
 
     reloadMasonry = function () { $('#photofeed').masonry('reload') }
@@ -346,6 +347,7 @@ Meteor.methods({get500pxData: function () {
   var getAPIData = Meteor.call("getAPIData","500PX",fivehundredpxParams,url); 
 
     resultJSON = getAPIData.photos;
+    try {
      for (photoIndex in resultJSON) {
       photo = resultJSON[photoIndex];
       if (Photos.findOne({url:photo.image_url}) == null) {
@@ -361,8 +363,11 @@ Meteor.methods({get500pxData: function () {
         }
         Photos.insert(photo);
       }
+      else {
+        console.log("Image exists in database.")
+      }
      }
-
+    } catch(e) {console.log(e)}
      // Signal masonry refresh
      Update.insert({go:1});
      Update.remove();
