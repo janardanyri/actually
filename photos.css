@@ -19,12 +19,27 @@
 .photo img {
   width: 100%;
 }
+
+.add-left-comment {
+  display: none;
+}
+
+.highlighted .add-left-comment {
+  display: block;
+}
+
 .add-comment {
   visibility: hidden;
 }
 .photo:hover .add-comment {
   visibility: visible;
 }
+
+.highlighted .add-comment {
+  visibility: visible;
+}
+
+
 .photocomment {
   float: left;
   width: 230px;

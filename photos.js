@@ -106,15 +106,6 @@ if (Meteor.is_client) {
       }
     }
   }
-    /*,
-    'click .photosubmit': function (e) {
-      var id = this._id
-      var comment_text = $('#photocomment_'+id).val();
-      var photo = SidebarSelections.findOne({_id:id});
-      photo.comments = (photo.comments || []);
-      photo.comments[photo.comments.length] = comment_text;
-      SidebarSelections.update({_id:id}, { $set: {comments: photo.comments }}, true);
-    }*/
 
   Template.photofeed.photofeed_callback = function () {
     Meteor.defer(function () {
@@ -155,7 +146,19 @@ if (Meteor.is_client) {
 
 
   Template.photo.events = {
-    'click': function (e) {
+    'keypress .photocomment': function (event) {
+      if(event.which == 13) { // Enter
+        var id = this._id
+        var comment_text = $('#photocomment_'+id).val();
+        var originalPhoto = Photos.findOne({_id:id});
+        var photo = SidebarSelections.findOne({url:originalPhoto.url});
+        photo.comments = (photo.comments || []);
+        photo.comments[photo.comments.length] = comment_text;
+        SidebarSelections.update({_id:photo._id}, { $set: {comments: photo.comments }}, true);
+        $('#photocomment_'+id).val(''); // Blank text entry
+      }
+    },
+    'click img': function (e) {
       if ($('#photofeed').css('width') != '72%') {
         $('#photofeed').css('width', '72%');
         $('#sidebar').css('width', '27%');
@@ -195,9 +198,15 @@ if (Meteor.is_client) {
       setTimeout('scroll_to("'+bigPhotoSelector+'");',700);
       //});
       Session.set("highlighted", id)
+      $("#photocomment_"+id).focus()
    } else { // We're shrinking the highlighted image
+     if (container.attr('id') == 'sidebarphotos') { // shink sidebar if closing last photo
+       $('#photofeed').css('width', '72%');
+       $('#sidebar').css('width', '27%');
+       setTimeout('$("#photofeed").masonry("reload");', 500);
+     }
      Session.set("highlighted", null);
-     setTimeout('$("#'+container.attr('id')+'").masonry("reload");', 200);
+     setTimeout('$("#'+container.attr('id')+'").masonry("reload");', 300);
    }
    setTimeout('$("#photofeed").masonry("reload");', 200);
    setTimeout('$("#sidebarphotos").masonry("reload");', 200);
