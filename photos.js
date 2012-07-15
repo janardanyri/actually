@@ -123,8 +123,6 @@ if (Meteor.is_server) {
 
 Meteor.methods({getFlickrData: function () {
   this.unblock();
-  Photos.remove({}); 
-  console.log("wipe'd data");
   console.log("Fetching data from Flickr...");
 
   var flickrParams = {
