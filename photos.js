@@ -32,6 +32,12 @@ if (Meteor.is_client) {
     }
   }
 
+  addSidebarSelection = function (url, comment) {
+    //SidebarSelections.update({url:url}, { $set: {date:$.now()}}, true ) // <- true means upsert
+    // Upsert not working for some reason (maybe it's changed)
+    //SidebarSelections.remove({url:url})
+ }
+
   Template.photofeed.photos = function () {
     console.log("Fetching photofeed photos...")
     return Photos.find({}, {sort: {date:-1}});
@@ -47,6 +53,17 @@ if (Meteor.is_client) {
       console.log("Chat submitted")
       addSidebarSelection(null, $("#chatbox").val())
       $("#chatbox").val('');
+    }
+  }
+
+  Template.sidephoto.events = {
+    'click .photosubmit': function (e) {
+      var id = this._id
+      var comment_text = $('#photocomment_'+id).val();
+      var photo = SidebarSelections.findOne({_id:id});
+      photo.comments = (photo.comments || []);
+      photo.comments[photo.comments.length] = comment_text;
+      SidebarSelections.update({_id:id}, { $set: {comments: photo.comments }}, true);
     }
   }
 
