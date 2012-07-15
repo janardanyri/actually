@@ -7,11 +7,11 @@ SidebarSelections = new Meteor.Collection("sidebar_selections");
 
 if (Meteor.is_client) {
 
-  addSidebarSelection = function (url) {
+  addSidebarSelection = function (url, comment) {
     //SidebarSelections.update({url:url}, { $set: {date:$.now()}}, true ) // <- true means upsert
     // Upsert not working for some reason (maybe it's changed)
-    SidebarSelections.remove({url:url})
-    SidebarSelections.insert({url:url, date:$.now()}) 
+    //SidebarSelections.remove({url:url})
+    SidebarSelections.insert({url:url, comment:comment, date:$.now()}) 
   }
 
   Template.photofeed.photos = function () {
@@ -21,6 +21,13 @@ if (Meteor.is_client) {
   Template.sidebar.photos = function () {
     return SidebarSelections.find({}, {sort: {date:-1}}); //, {sort: {score: -1, name: 1}});
   };
+
+  Template.chatsubmit.events = {
+    'click': function (e) {
+      addSidebarSelection(null, $("#chatbox").val())
+      $("#chatbox").val('');
+    }
+  }
 
   Template.photofeed.photofeed_callback = function () {
     Meteor.defer(function () {
