@@ -303,7 +303,8 @@ Meteor.methods({get500px: function () {
 
   var fivehundredpxParams = {
     consumer_key : "sDWHPHnEiDj20gDLVWPlu2jZtFbkO8DWu7ekFfvo",
-    feature : "popular"
+    feature : "popular",
+    image_size : "4"
   };
 
   var url = "https://api.500px.com/v1/photos";
