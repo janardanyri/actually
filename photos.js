@@ -235,6 +235,7 @@ if (Meteor.is_client) {
 
 if (Meteor.is_server) {
   Meteor.startup(function () {
+    Photos.remove({});
     console.log("Server startup")
     // code to run on server at startup
     if(Photos.find().count() == 0) {
@@ -378,7 +379,7 @@ Meteor.methods({callAPIs: function () {
   Meteor.call("getFlickrData");
   Meteor.call("getInstagramData");
   Meteor.call("get500pxData");
-  Meteor.call("getFoursquareData");
+  //Meteor.call("getFoursquareData");
   return false;
 }});
 
