@@ -70,9 +70,11 @@ form {
 	z-index: -1;
 }
 
+#sidephotos {
+	margin: 0 auto;
+}
+
 #photofeed {
-  margin: 0 auto;
-  text-align: center;
   padding: 10px 0 0 10px;
 }
 
