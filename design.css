@@ -106,11 +106,19 @@ form {
 }
 
 
+.comment {
+	color: white;
+	text-align: left;
+	width: 240px;
+}
 
+.add {
+	color: #ff9900;
+}
 
-
-
-
+.username {
+	color: #999;
+}
 
 
 

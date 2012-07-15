@@ -17,11 +17,11 @@ header {
 
 #photofeed {
 	float: left;
-    width: 69%;
+    width: 80%;
 }
 #sidebar {
     float: right;
-    width: 29%;
+    width: 19%;
 }
 .photo {
   width: 220px;
