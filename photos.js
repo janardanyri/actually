@@ -10,13 +10,13 @@ SidebarSelections = new Meteor.Collection("sidebar_selections");
 if (Meteor.is_client) {
 
   Meteor.startup( function () {
-    Meteor.call("getFlickrData");
-    Meteor.setInterval(invokeServerImageFetch,20 * 1000);
+    //Meteor.call("getFlickrData");
+    //Meteor.setInterval(invokeServerImageFetch,20 * 1000);
   });
 
   function invokeServerImageFetch() {
     console.log("hello")
-    Meteor.call("getFlickrData");
+    //Meteor.call("getFlickrData");
   }
 
   addSidebarSelection = function (url, comment) {
@@ -105,18 +105,15 @@ if (Meteor.is_server) {
   Meteor.startup(function () {
     // code to run on server at startup
     if(Photos.find().count() == 0) {
-      urls = ["https://www.google.com/logos/2012/klimt12-hp.jpg",
-              "http://www.google.com/logos/2012/Frantisek_Krizik-2012-hp.jpg"];
-      for (var i = 0; i < urls.length; i++) {
-        Photos.insert({url: urls[i]});
-      }
+      Meteor.call("getFlickrData");
     }
   });
 }
 
 Meteor.methods({getFlickrData: function () {
   this.unblock();
-
+  Photos.remove({}); 
+  console.log("wipe'd data");
   console.log("Fetching data from Flickr...");
 
   var flickrParams = {
