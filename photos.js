@@ -199,8 +199,13 @@ if (Meteor.is_client) {
       //});
       Session.set("highlighted", id)
    } else { // We're shrinking the highlighted image
+     if (container.attr('id') == 'sidebarphotos') { // shink sidebar if closing last photo
+       $('#photofeed').css('width', '72%');
+       $('#sidebar').css('width', '27%');
+       setTimeout('$("#photofeed").masonry("reload");', 500);
+     }
      Session.set("highlighted", null);
-     setTimeout('$("#'+container.attr('id')+'").masonry("reload");', 200);
+     setTimeout('$("#'+container.attr('id')+'").masonry("reload");', 300);
    }
    setTimeout('$("#photofeed").masonry("reload");', 200);
    setTimeout('$("#sidebarphotos").masonry("reload");', 200);
