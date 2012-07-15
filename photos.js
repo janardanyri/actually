@@ -10,6 +10,7 @@ SidebarSelections = new Meteor.Collection("sidebar_selections");
 if (Meteor.is_client) {
 
   Meteor.startup( function () {
+    console.log("Client startup")
     //Meteor.call("getFlickrData");
     //Meteor.setInterval(invokeServerImageFetch,20 * 1000);
   });
@@ -27,15 +28,18 @@ if (Meteor.is_client) {
   }
 
   Template.photofeed.photos = function () {
+    console.log("Fetching photofeed photos...")
     return Photos.find({}, {sort: {date:-1}}, 30); //, {sort: {score: -1, name: 1}});
   };
 
   Template.sidebar.photos = function () {
+    console.log("Fetching sidebar photos...")
     return SidebarSelections.find({}, {sort: {date:-1}}, 20); //, {sort: {score: -1, name: 1}});
   };
 
   Template.chatsubmit.events = {
     'click': function (e) {
+      console.log("Chat submitted")
       addSidebarSelection(null, $("#chatbox").val())
       $("#chatbox").val('');
     }
@@ -50,7 +54,6 @@ if (Meteor.is_client) {
           columnWidth : 220,
           gutterWidth: 10,
           isAnimated: true,
-          cornerStampSelector: '.corner-stamp',
           animationOptions: {
             duration: animation_ms,
             easing: 'swing',
@@ -103,6 +106,7 @@ if (Meteor.is_client) {
 
 if (Meteor.is_server) {
   Meteor.startup(function () {
+    console.log("Server startup")
     // code to run on server at startup
     if(Photos.find().count() == 0) {
       Meteor.call("getFlickrData");
