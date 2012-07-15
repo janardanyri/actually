@@ -69,8 +69,10 @@ form {
 	z-index: -1;
 }
 
-.photo {
-	padding: 20px;
+#photofeed {
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px 0 0 10px;
 }
 
 .photo img {
