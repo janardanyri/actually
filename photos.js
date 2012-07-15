@@ -8,7 +8,16 @@ Photos = new Meteor.Collection("photos");
 SidebarSelections = new Meteor.Collection("sidebar_selections");
 
 if (Meteor.is_client) {
-  window.Photos = Photos;
+
+  Meteor.startup( function () {
+    Meteor.call("getFlickrData");
+    Meteor.setInterval(invokeServerImageFetch,20 * 1000);
+  });
+
+  function invokeServerImageFetch() {
+    console.log("hello")
+    Meteor.call("getFlickrData");
+  }
 
   addSidebarSelection = function (url, comment) {
     //SidebarSelections.update({url:url}, { $set: {date:$.now()}}, true ) // <- true means upsert
@@ -18,11 +27,11 @@ if (Meteor.is_client) {
   }
 
   Template.photofeed.photos = function () {
-    return Photos.find({}); //, {sort: {score: -1, name: 1}});
+    return Photos.find({}, {sort: {date:-1}}, 30); //, {sort: {score: -1, name: 1}});
   };
 
   Template.sidebar.photos = function () {
-    return SidebarSelections.find({}, {sort: {date:-1}}); //, {sort: {score: -1, name: 1}});
+    return SidebarSelections.find({}, {sort: {date:-1}}, 20); //, {sort: {score: -1, name: 1}});
   };
 
   Template.chatsubmit.events = {
@@ -104,5 +113,36 @@ if (Meteor.is_server) {
     }
   });
 }
+
+Meteor.methods({getFlickrData: function () {
+  this.unblock();
+
+  console.log("Fetching data from Flickr...");
+
+  var flickrParams = {
+    tagmode: "any",
+    format: "json"
+  };
+
+  if (typeof searchTerm == "string") {
+    flickrParams.tags = searchTerm
+  };
+  var result = Meteor.http.call("GET", "http://api.flickr.com/services/feeds/photos_public.gne?&lang=en-us&format=json&jsoncallback=?",
+                                {params: flickrParams});
+  if (result.statusCode === 200) {
+    console.log("Result.statusCode: " + result.statusCode)
+    resultJSON = eval(result.content);
+    //console.log(resultJSON.items)
+     for (photoIndex in resultJSON.items) {
+      photo = resultJSON.items[photoIndex]
+      if (Photos.findOne({url:photo.media.m}) == null) {
+        photo.url = photo.media.m;
+        photo.date = Date.now();
+        Photos.insert(photo);
+      }
+     }
+   }
+  return false;
+}});
 
 
