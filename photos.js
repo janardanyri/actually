@@ -95,7 +95,18 @@ if (Meteor.is_client) {
         SidebarSelections.update({_id:id}, { $set: {comments: photo.comments }}, true);
         $('#photocomment_'+id).val(''); // Blank text entry
       }
-    }/*,
+    },
+    'click img': function (e) {
+      if ($('#sidebar').css('width') != '72%') {
+        $('#photofeed').css('width', '27%');
+        $('#sidebar').css('width', '72%');
+        setTimeout('expand("'+this._id+'","'+this.url+'",$("#sidebarphotos"), false);',500);
+      } else {
+        expand(this._id, this.url, $('#sidebarphotos'), false);
+      }
+    }
+  }
+    /*,
     'click .photosubmit': function (e) {
       var id = this._id
       var comment_text = $('#photocomment_'+id).val();
@@ -104,27 +115,35 @@ if (Meteor.is_client) {
       photo.comments[photo.comments.length] = comment_text;
       SidebarSelections.update({_id:id}, { $set: {comments: photo.comments }}, true);
     }*/
-  }
 
   Template.photofeed.photofeed_callback = function () {
     Meteor.defer(function () {
-      $('#photofeed').imagesLoaded(function(){
-        $('#photofeed').masonry({
+      init_masonry_container($('#photofeed'));
+    });
+  }
+
+  Template.sidebar.sidebar_callback = function () {
+    Meteor.defer(function () {
+      init_masonry_container($('#sidebarphotos'));
+    });
+  }
+
+  function init_masonry_container(container) {
+    container.imagesLoaded(function(){
+      container.masonry({
           // options
-          itemSelector : '.photo',
-          columnWidth : 240,
-          gutterWidth: 10,
-          isAnimated: true,
-          animationOptions: {
-            duration: animation_ms,
-            easing: 'swing',
-            queue: false
-          }
-        });
+        itemSelector: '.photo',
+        columnWidth : 240,
+        gutterWidth: 10,
+        isAnimated: true,
+        animationOptions: {
+          duration: animation_ms,
+          easing: 'swing',
+          queue: false
+        }
       });
     });
-    // return nothing
-  };
+  }
 
 
   function scroll_to(selector) {
@@ -137,19 +156,26 @@ if (Meteor.is_client) {
 
   Template.photo.events = {
     'click': function (e) {
-       expand(this, $('#photofeed'));
+      if ($('#photofeed').css('width') != '72%') {
+        $('#photofeed').css('width', '72%');
+        $('#sidebar').css('width', '27%');
+        setTimeout('expand("'+this._id+'","'+this.url+'",$("#photofeed"), true);',500);
+      } else {
+        expand(this._id, this.url, $("#photofeed"), true);
+      }
     }
   }
 
-  function expand(photo, container) {
+
+  function expand(id, url, container, moveToTop) {
     if(Session.get("highlighted")) { // We have an existing blown up image
       shrinkPhoto = $('#'+Session.get("highlighted"))
       shrinkPhoto.removeClass('highlighted');
       shrinkPhoto.animate({width:220}, animation_ms);
     }
-    if(Session.get("highlighted") != photo._id) { // We're blowing up a new image
-      addSidebarSelection(photo.url);
-      bigPhotoSelector = '#'+photo._id;
+    if(Session.get("highlighted") != id) { // We're blowing up a new image
+      if (moveToTop) { addSidebarSelection(url); }
+      bigPhotoSelector = '#'+id;
       bigPhoto = $(bigPhotoSelector);
       bigPhoto.addClass('highlighted')
 
@@ -166,7 +192,7 @@ if (Meteor.is_client) {
         setTimeout('scroll_to("'+bigPhotoSelector+'");',animation_ms*10);
         setTimeout('scroll_to("'+bigPhotoSelector+'");',animation_ms*20);
      });
-      Session.set("highlighted", photo._id)
+      Session.set("highlighted", id)
    } else { // We're shrinking the highlighted image
      Session.set("highlighted", null);
      setTimeout('$("#'+container.attr('id')+'").masonry("reload");', 200);

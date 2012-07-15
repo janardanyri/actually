@@ -48,9 +48,10 @@
 
 <template name="sidebar">
   <div id="sidebar">
-  	<div class="sidebarphotos">
+  	<div id="sidebarphotos" class="sidebarphotos">
 	  	{{#each photos}}
    	  		{{> sidephoto}}<br>
+            {{sidebar_callback}}
    	  	{{/each}}
   	</div>
   </div>

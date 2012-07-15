@@ -8,6 +8,9 @@
     float: right;
     width: 27%;
 }
+#sidebarphotos {
+  width: 100%;
+}
 .photo {
   width: 220px;
   float: left;
