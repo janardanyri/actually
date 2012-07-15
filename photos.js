@@ -6,6 +6,7 @@ Photos = new Meteor.Collection("photos");
 SidebarSelections = new Meteor.Collection("sidebar_selections");
 
 if (Meteor.is_client) {
+  window.Photos = Photos;
 
   addSidebarSelection = function (url, comment) {
     //SidebarSelections.update({url:url}, { $set: {date:$.now()}}, true ) // <- true means upsert
