@@ -51,7 +51,7 @@ if (Meteor.is_client) {
         $('#photofeed').masonry({
           // options
           itemSelector : '.photo',
-          columnWidth : 220,
+          columnWidth : 240,
           gutterWidth: 10,
           isAnimated: true,
           animationOptions: {
@@ -60,7 +60,6 @@ if (Meteor.is_client) {
             queue: false
           }
         });
-
       });
     });
     // return nothing
@@ -69,8 +68,9 @@ if (Meteor.is_client) {
 
   function scroll_to(selector) {
     var top = document.body.scrollTop;
-    var moveBy = $(selector).position().top - top - 100;
-      $('html,body').animate({scrollTop: top+moveBy}, 150, 'swing');
+    var photo = $(selector)
+    var moveBy = photo.position().top - top + 30;
+    $('html,body').animate({scrollTop: top+moveBy}, 150, 'swing');
   }
 
 
@@ -80,24 +80,31 @@ if (Meteor.is_client) {
       addSidebarSelection(this.url);
        if(Session.get("highlighted")) { // We have an existing blown up image
           shrinkPhoto = $('#'+Session.get("highlighted"))
-          //shrinkPhoto.css('margin','0 -300px 0 -300px');
           shrinkPhoto.removeClass('highlighted');
-          shrinkPhoto.animate({width:220}, animation_ms, function() {
-            photofeed.masonry('reload')
-          });
+          shrinkPhoto.animate({width:220}, animation_ms);
        }
        if(Session.get("highlighted") != this._id) { // We're blowing up a new image
          bigPhotoSelector = '#'+this._id;
          bigPhoto = $(bigPhotoSelector);
-         //bigPhoto.css('margin','0 300px 0 300px');
          bigPhoto.addClass('highlighted')
-         bigPhoto.animate({width:680}, animation_ms, function() {
+
+         var height = bigPhoto.outerHeight();
+         var width = bigPhoto.outerWidth();
+
+         var max_height = $(window).height() - 20;
+         var width_for_max_height = width * max_height / height;
+         //alert(width_for_max_height)
+         width = Math.round(Math.min(photofeed.innerWidth()-70, width_for_max_height));
+         width = width+'px';
+         bigPhoto.animate({width: width}, animation_ms, function() {
            photofeed.masonry('reload')
-           setTimeout('scroll_to("'+bigPhotoSelector+'");',animation_ms*8);
+           setTimeout('scroll_to("'+bigPhotoSelector+'");',animation_ms*10);
+           setTimeout('scroll_to("'+bigPhotoSelector+'");',animation_ms*20);
         });
          Session.set("highlighted", this._id)
       } else { // We're shrinking the highlighted image
         Session.set("highlighted", null);
+        setTimeout('photofeed.masonry("reload");', 200);
       }
       photofeed.masonry('reload')
     }
