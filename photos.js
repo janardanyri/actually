@@ -4,6 +4,9 @@ var animation_ms = 50;
 // {url (string)}
 Photos = new Meteor.Collection("photos");
 
+// just used by the server to signal data update finished and masonry should reload (super hackish?)
+Update = new Meteor.Collection("update");
+
 // {url, date}
 SidebarSelections = new Meteor.Collection("sidebar_selections");
 
@@ -13,6 +16,15 @@ if (Meteor.is_client) {
     console.log("Client startup")
     Meteor.call("getInstagramData");
     //Meteor.setInterval(invokeServerImageFetch,20 * 1000);
+
+    reloadMasonry = function () { $('#photofeed').masonry('reload') }
+
+    Update.find().observe({
+      added: function (user) {
+        reloadMasonry();
+      },
+    });
+
   });
 
   function invokeServerImageFetch() {
@@ -192,6 +204,9 @@ Meteor.methods({getFlickrData: function () {
         Photos.insert(photo);
       }
      }
+     // Signal masonry refresh
+     Update.insert({go:1});
+     Update.remove();
    }
   return false;
 }});
@@ -232,6 +247,9 @@ Meteor.methods({getInstagramData: function () {
         Photos.insert(photo);
       }
      }
+     // Signal masonry refresh
+     Update.insert({go:1});
+     Update.remove();
    }
   return false;
 }});
