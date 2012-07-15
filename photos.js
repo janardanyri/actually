@@ -106,15 +106,6 @@ if (Meteor.is_client) {
       }
     }
   }
-    /*,
-    'click .photosubmit': function (e) {
-      var id = this._id
-      var comment_text = $('#photocomment_'+id).val();
-      var photo = SidebarSelections.findOne({_id:id});
-      photo.comments = (photo.comments || []);
-      photo.comments[photo.comments.length] = comment_text;
-      SidebarSelections.update({_id:id}, { $set: {comments: photo.comments }}, true);
-    }*/
 
   Template.photofeed.photofeed_callback = function () {
     Meteor.defer(function () {
@@ -155,6 +146,18 @@ if (Meteor.is_client) {
 
 
   Template.photo.events = {
+    'keypress .photocomment': function (event) {
+      if(event.which == 13) { // Enter
+        var id = this._id
+        var comment_text = $('#photocomment_'+id).val();
+        var originalPhoto = Photos.findOne({_id:id});
+        var photo = SidebarSelections.findOne({url:originalPhoto.url});
+        photo.comments = (photo.comments || []);
+        photo.comments[photo.comments.length] = comment_text;
+        SidebarSelections.update({_id:id}, { $set: {comments: photo.comments }}, true);
+        $('#photocomment_'+id).val(''); // Blank text entry
+      }
+    },
     'click': function (e) {
       if ($('#photofeed').css('width') != '72%') {
         $('#photofeed').css('width', '72%');
