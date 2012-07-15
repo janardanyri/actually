@@ -32,12 +32,6 @@ if (Meteor.is_client) {
     }
   }
 
-  addSidebarSelection = function (url, comment) {
-    //SidebarSelections.update({url:url}, { $set: {date:$.now()}}, true ) // <- true means upsert
-    // Upsert not working for some reason (maybe it's changed)
-    //SidebarSelections.remove({url:url})
- }
-
   Template.photofeed.photos = function () {
     console.log("Fetching photofeed photos...")
     return Photos.find({}, {sort: {date:-1}});
