@@ -135,8 +135,8 @@ Meteor.methods({getFlickrData: function () {
     //console.log(resultJSON.items)
      for (photoIndex in resultJSON.items) {
       photo = resultJSON.items[photoIndex]
-      if (Photos.findOne({url:photo.media.m}) == null) {
-        photo.url = photo.media.m;
+      if (Photos.findOne({url:photo.link}) == null) {
+        photo.url = photo.link;
         photo.date = Date.now();
         Photos.insert(photo);
       }
