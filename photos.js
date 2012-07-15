@@ -11,7 +11,7 @@ if (Meteor.is_client) {
 
   Meteor.startup( function () {
     console.log("Client startup")
-    //Meteor.call("getFlickrData");
+    Meteor.call("getInstagramData");
     //Meteor.setInterval(invokeServerImageFetch,20 * 1000);
   });
 
@@ -121,10 +121,12 @@ if (Meteor.is_server) {
     console.log("Server startup")
     // code to run on server at startup
     if(Photos.find().count() == 0) {
-      Meteor.call("getFlickrData");
+      Meteor.call("getInstagramData");
     }
   });
 }
+
+
 
 Meteor.methods({getFlickrData: function () {
   this.unblock();
@@ -148,6 +150,7 @@ Meteor.methods({getFlickrData: function () {
       photo = resultJSON.items[photoIndex]
       if (Photos.findOne({url:photo.media.m}) == null) {
         photo.url = String(photo.media.m).replace('m.jpg', 'b.jpg');
+        photo.source = "flickr";
         photo.date = Date.now();
         console.log("Inserting image: "+photo.media.m)
         console.log("Total images: " +Photos.find().count())
@@ -164,3 +167,41 @@ Meteor.methods({getFlickrData: function () {
 }});
 
 
+Meteor.methods({getInstagramData: function () {
+  this.unblock();
+  console.log("Fetching data from Instagram...");
+
+  var InstagramParams = {
+    access_token : "25487003.f59def8.7e4762897bfc4ca19ae2dfeafb4b8702"
+  };
+
+  var url = ""
+  if (typeof searchTerm == "string") {
+    url = "https://api.instagram.com/v1/tags/" + searchTerm + "/media/recent";
+  } else {
+    url = "https://api.instagram.com/v1/media/popular";
+  }
+  var result = Meteor.http.call("GET", url, {params: InstagramParams});
+  
+  if (result.statusCode === 200) {
+    console.log("Result.statusCode: " + result.statusCode);
+    resultJSON = result.data.data;
+     for (photoIndex in resultJSON) {
+      photo = resultJSON[photoIndex];
+      if (Photos.findOne({url:photo.images.standard_resolution.url}) == null) {
+        photo.url = photo.images.standard_resolution.url;
+        photo.source = "Instagram";
+        photo.date = Date.now();
+        console.log("Inserting image: "+photo.images.standard_resolution.url);
+        console.log("Total images: " +Photos.find().count());
+        while(Photos.find().count() > 20) {
+          oldestPhoto = Photos.findOne({}, {sort: {date:1}});
+          console.log("Deleting oldest image: "+oldestPhoto.url);
+          Photos.remove({url:oldestPhoto.url});
+        }
+        Photos.insert(photo);
+      }
+     }
+   }
+  return false;
+}});
