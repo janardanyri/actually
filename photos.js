@@ -105,40 +105,46 @@ if (Meteor.is_client) {
 
   Template.photo.events = {
     'click': function (e) {
-      photofeed = $('#photofeed');
-       if(Session.get("highlighted")) { // We have an existing blown up image
-          shrinkPhoto = $('#'+Session.get("highlighted"))
-          shrinkPhoto.removeClass('highlighted');
-          shrinkPhoto.animate({width:220}, animation_ms);
-       }
-       if(Session.get("highlighted") != this._id) { // We're blowing up a new image
-         addSidebarSelection(this.url);
-         bigPhotoSelector = '#'+this._id;
-         bigPhoto = $(bigPhotoSelector);
-         bigPhoto.addClass('highlighted')
-
-         var height = bigPhoto.outerHeight();
-         var width = bigPhoto.outerWidth();
-
-         var max_height = $(window).height() - 20;
-         var width_for_max_height = width * max_height / height;
-         //alert(width_for_max_height)
-         width = Math.round(Math.min(photofeed.innerWidth()-70, width_for_max_height));
-         width = width+'px';
-         bigPhoto.animate({width: width}, animation_ms, function() {
-           photofeed.masonry('reload')
-           setTimeout('scroll_to("'+bigPhotoSelector+'");',animation_ms*10);
-           setTimeout('scroll_to("'+bigPhotoSelector+'");',animation_ms*20);
-        });
-         Session.set("highlighted", this._id)
-      } else { // We're shrinking the highlighted image
-        Session.set("highlighted", null);
-        setTimeout('photofeed.masonry("reload");', 200);
-      }
-      photofeed.masonry('reload')
+       expand(this, $('#photofeed'));
     }
   }
+
+  function expand(photo, container) {
+    if(Session.get("highlighted")) { // We have an existing blown up image
+      shrinkPhoto = $('#'+Session.get("highlighted"))
+      shrinkPhoto.removeClass('highlighted');
+      shrinkPhoto.animate({width:220}, animation_ms);
+    }
+    if(Session.get("highlighted") != photo._id) { // We're blowing up a new image
+      addSidebarSelection(photo.url);
+      bigPhotoSelector = '#'+photo._id;
+      bigPhoto = $(bigPhotoSelector);
+      bigPhoto.addClass('highlighted')
+
+      var height = bigPhoto.outerHeight();
+      var width = bigPhoto.outerWidth();
+
+      var max_height = $(window).height() - 20;
+      var width_for_max_height = width * max_height / height;
+      //alert(width_for_max_height)
+      width = Math.round(Math.min(container.innerWidth()-70, width_for_max_height));
+      width = width+'px';
+      bigPhoto.animate({width: width}, animation_ms, function() {
+        container.masonry('reload')
+        setTimeout('scroll_to("'+bigPhotoSelector+'");',animation_ms*10);
+        setTimeout('scroll_to("'+bigPhotoSelector+'");',animation_ms*20);
+     });
+      Session.set("highlighted", photo._id)
+   } else { // We're shrinking the highlighted image
+     Session.set("highlighted", null);
+     setTimeout('$("#'+container.attr('id')+'").masonry("reload");', 200);
+   }
+   container.masonry('reload')
+  }
+
 }
+
+
 
 if (Meteor.is_server) {
   Meteor.startup(function () {
