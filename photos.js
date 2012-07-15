@@ -21,6 +21,11 @@ if (Meteor.is_client) {
     reloadMasonry = function () { $('#photofeed').masonry('reload') }
     reloadSideMasonry = function () { $('#sidebarphotos').masonry('reload') }
 
+    // Just hax it!
+
+    Meteor.setInterval(reloadMasonry, 5000)
+    Meteor.setInterval(reloadSideMasonry, 2000)
+
     Update.find().observe({
       added: function (user) {
         reloadMasonry();
