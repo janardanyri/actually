@@ -31,6 +31,15 @@ header {
 .photo img {
   width: 100%;
 }
+.add-comment {
+  display: none;
+}
+.photo:hover .add-comment {
+  display: block;
+}
+.photocomment {
+  width: 50px;
+}
 
 #footer {
 	position: fixed;
