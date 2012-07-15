@@ -17,7 +17,7 @@ if (Meteor.is_client) {
 
   function invokeServerImageFetch() {
     console.log("hello")
-    //Meteor.call("getFlickrData");
+    Meteor.call("getFlickrData");
   }
 
   addSidebarSelection = function (url, comment) {
@@ -29,12 +29,12 @@ if (Meteor.is_client) {
 
   Template.photofeed.photos = function () {
     console.log("Fetching photofeed photos...")
-    return Photos.find({}, {sort: {date:-1}}, 30); //, {sort: {score: -1, name: 1}});
+    return Photos.find({}, {sort: {date:-1}});
   };
 
   Template.sidebar.photos = function () {
     console.log("Fetching sidebar photos...")
-    return SidebarSelections.find({}, {sort: {date:-1}}, 20); //, {sort: {score: -1, name: 1}});
+    return SidebarSelections.find({}, {sort: {date:-1}});
   };
 
   Template.chatsubmit.events = {
@@ -144,6 +144,13 @@ Meteor.methods({getFlickrData: function () {
       if (Photos.findOne({url:photo.media.m}) == null) {
         photo.url = photo.media.m;
         photo.date = Date.now();
+        console.log("Inserting image: "+photo.media.m)
+        console.log("Total images: " +Photos.find().count())
+        while(Photos.find().count() > 20) {
+          oldestPhoto = Photos.findOne({}, {sort: {date:1}});
+          console.log("Deleting oldest image: "+oldestPhoto.url)
+          Photos.remove({url:oldestPhoto.url});
+        }
         Photos.insert(photo);
       }
      }
