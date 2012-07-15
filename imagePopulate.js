@@ -1,10 +1,7 @@
 //imagePopulate.js
 if (Meteor.is_client) {
 	function getFlickrData(searchTerm) {
-		if(Photos.find().count() > 20) {
-			Photos.remove({});
-		}
-		if(Photos.find().count() < 20) {
+		
 	
 	
 		var myData = {};
@@ -26,17 +23,31 @@ if (Meteor.is_client) {
 
 		flickrRequest.complete(function() { 
 			//clone into returnobject on success
-			$.each(myData.items, function(i,item) {
-					if (Photos.findOne({url:item.media.m}) == null) {
-						item.url = item.media.m;
-						Photos.insert(item);
-					};
-				});
+			//Check photos
+			alert("This many photos: " + Photos.find().count());
+			if(Photos.find().count() > 20) {
+				alert('Killing Photos');
+				Photos.remove({});
+			}
+			if(Photos.find().count() < 20) {
+				alert('Adding Photos');
+				$.each(myData.items, function(i,item) {
+						if (Photos.findOne({url:item.media.m}) == null) {
+							item.url = item.media.m;
+
+							Photos.insert(item);
+						};
+					});
+				}
 		 	});
-		};
+		
 	}
+
 	
-	getFlickrData();
+
+	$(document).ready(getFlickrData())
+
+	
 }
 
 
