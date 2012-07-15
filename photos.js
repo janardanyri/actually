@@ -53,6 +53,17 @@ if (Meteor.is_client) {
   }
 
   Template.sidephoto.events = {
+    'keypress .photocomment': function (event) {
+      if(event.which == 13) { // Enter
+        var id = this._id
+        var comment_text = $('#photocomment_'+id).val();
+        var photo = SidebarSelections.findOne({_id:id});
+        photo.comments = (photo.comments || []);
+        photo.comments[photo.comments.length] = comment_text;
+        SidebarSelections.update({_id:id}, { $set: {comments: photo.comments }}, true);
+        $('#photocomment_'+id).val(''); // Blank text entry
+      }
+    }/*,
     'click .photosubmit': function (e) {
       var id = this._id
       var comment_text = $('#photocomment_'+id).val();
@@ -60,7 +71,7 @@ if (Meteor.is_client) {
       photo.comments = (photo.comments || []);
       photo.comments[photo.comments.length] = comment_text;
       SidebarSelections.update({_id:id}, { $set: {comments: photo.comments }}, true);
-    }
+    }*/
   }
 
   Template.photofeed.photofeed_callback = function () {

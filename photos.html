@@ -22,7 +22,7 @@
 	</form>
 	
 	<div class="headerlinks">
-		<img src="dropbox.png"><a href="#">Upload</a>
+		<img src="dropbox.png"><a href="https://api.glitch.com/oauth2/authorize?response_type=code&client_id=000yourclientid000&redirect_uri=http://yoursitehere/oauth/&scope=identity">Upload</a>
 		<img src="profile.png" class="moveitover"><a href="#">Log In</a>
 	</div>
 </div>
@@ -88,7 +88,6 @@
         {{/each}}
       </div>
       <input class="photocomment" id="photocomment_{{_id}}" type="text" />
-      <input class="photosubmit" id="photosubmit_{{_id}}" type="submit" />
     </div>
     <span class="add">&raquo; Add comment</span>
   {{/if}}
