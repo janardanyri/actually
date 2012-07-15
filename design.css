@@ -41,7 +41,8 @@ form {
 
 .headerlinks {
 	display: inline;
-	margin-left: 140px;
+	float: right;
+	margin: 24px 80px 0 0;
 }
 
 .headerlinks a {
@@ -57,15 +58,15 @@ form {
 }
 
 #photofeed {
-    background-image: url(wood.png);
+	background-image: url(wood.png);
     z-index: 5;
 }
 
 #sidebar {
 	background-image: url(texture.png);
-	-webkit-box-shadow: -7px 7px 10px black;
-	-moz-box-shadow: -7px 7px 10px black;
-	box-shadow: -7px 7px 10px black;
+	-webkit-box-shadow: 0 7px 10px black;
+	-moz-box-shadow: 0 7px 10px black;
+	box-shadow: 0 7px 10px black;
 	z-index: -1;
 }
 
