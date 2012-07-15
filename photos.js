@@ -54,11 +54,13 @@ if (Meteor.is_client) {
     // return nothing
   };
 
+
   function scroll_to(selector) {
     var top = document.body.scrollTop;
     var moveBy = $(selector).position().top - top - 100;
       $('html,body').animate({scrollTop: top+moveBy}, 150, 'swing');
   }
+
 
   Template.photo.events = {
     'click': function (e) {
