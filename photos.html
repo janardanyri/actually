@@ -87,9 +87,11 @@
           {{> comment}}
         {{/each}}
       </div>
-      <input class="photocomment" id="photocomment_{{_id}}" type="text" />
+      <div class="add-comment">
+        <input class="photocomment" id="photocomment_{{_id}}" type="text" />
+      </div>
     </div>
-    <span class="add">&raquo; Add comment</span>
+    <!--span class="add">&raquo; Add comment</span-->
   {{/if}}
   {{#if comment}}
     {{comment}}
