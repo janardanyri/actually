@@ -154,11 +154,11 @@ if (Meteor.is_client) {
         var photo = SidebarSelections.findOne({url:originalPhoto.url});
         photo.comments = (photo.comments || []);
         photo.comments[photo.comments.length] = comment_text;
-        SidebarSelections.update({_id:id}, { $set: {comments: photo.comments }}, true);
+        SidebarSelections.update({_id:photo._id}, { $set: {comments: photo.comments }}, true);
         $('#photocomment_'+id).val(''); // Blank text entry
       }
     },
-    'click': function (e) {
+    'click img': function (e) {
       if ($('#photofeed').css('width') != '72%') {
         $('#photofeed').css('width', '72%');
         $('#sidebar').css('width', '27%');

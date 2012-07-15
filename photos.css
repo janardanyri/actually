@@ -20,7 +20,13 @@
   width: 100%;
 }
 
+.add-left-comment {
+  display: none;
+}
 
+.highlighted .add-left-comment {
+  display: block;
+}
 
 .add-comment {
   visibility: hidden;
