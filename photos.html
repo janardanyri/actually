@@ -75,7 +75,9 @@
 
 <template name="sidephoto">
   {{#if url}}
-    <img src="{{url}}" />
+    <div class="photo" id="{{_id}}">
+      <img src="{{url}}" />
+    </div>
   {{/if}}
   {{#if comment}}
     {{comment}}
