@@ -14,7 +14,7 @@ if (Meteor.is_client) {
 
   Meteor.startup( function () {
     console.log("Client startup")
-    Meteor.call("getInstagramData");
+    Meteor.call("get500px");
     //Meteor.setInterval(invokeServerImageFetch,20 * 1000);
 
     reloadMasonry = function () { $('#photofeed').masonry('reload') }
@@ -27,9 +27,29 @@ if (Meteor.is_client) {
 
   });
 
-  function invokeServerImageFetch() {
-    console.log("hello")
+  function getFlickrData() {
+    console.log("getFlickrData")
+    $('.selected').removeClass("selected")
+    $('#Flickr').addClass("selected")
     Meteor.call("getFlickrData");
+  }
+  function getInstagramData() {
+    console.log("getInstagramData")
+    $('.selected').removeClass("selected")
+    $('#Instagram').addClass("selected")
+    Meteor.call("getInstagramData");
+  }
+  function get500pxData() {
+    console.log("get500pxData")
+    $('.selected').removeClass("selected")
+    $('#500px').addClass("selected")
+    Meteor.call("get500pxData");
+  }
+  function getFoursquareData() {
+    console.log("getFoursquareData")
+    $('.selected').removeClass("selected")
+    $('#Foursquare').addClass("selected")
+    Meteor.call("getFoursquareData");
   }
 
   addSidebarSelection = function (url, comment) {
@@ -163,7 +183,7 @@ if (Meteor.is_server) {
     console.log("Server startup")
     // code to run on server at startup
     if(Photos.find().count() == 0) {
-      Meteor.call("getInstagramData");
+      Meteor.call("get500px");
     }
   });
 }
@@ -214,30 +234,29 @@ Meteor.methods({getFlickrData: function () {
 
 Meteor.methods({getInstagramData: function () {
   this.unblock();
-  console.log("Fetching data from Instagram...");
 
   var InstagramParams = {
     access_token : "25487003.f59def8.7e4762897bfc4ca19ae2dfeafb4b8702"
   };
 
-  var url = ""
+  var url = "";
   if (typeof searchTerm == "string") {
     url = "https://api.instagram.com/v1/tags/" + searchTerm + "/media/recent";
   } else {
     url = "https://api.instagram.com/v1/media/popular";
   }
-  var result = Meteor.http.call("GET", url, {params: InstagramParams});
   
-  if (result.statusCode === 200) {
-    console.log("Result.statusCode: " + result.statusCode);
-    resultJSON = result.data.data;
+  //Pass in the API name, the URL and any required parameters and get a json object back.
+  var getAPIData = Meteor.call("getAPIData","Instagram",InstagramParams,url); 
+
+    resultJSON = getAPIData.data;
      for (photoIndex in resultJSON) {
       photo = resultJSON[photoIndex];
       if (Photos.findOne({url:photo.images.standard_resolution.url}) == null) {
         photo.url = photo.images.standard_resolution.url;
         photo.source = "Instagram";
         photo.date = Date.now();
-        console.log("Inserting image: "+photo.images.standard_resolution.url);
+        console.log("Inserting image: "+photo.url);
         console.log("Total images: " +Photos.find().count());
         while(Photos.find().count() > 20) {
           oldestPhoto = Photos.findOne({}, {sort: {date:1}});
@@ -250,6 +269,76 @@ Meteor.methods({getInstagramData: function () {
      // Signal masonry refresh
      Update.insert({go:1});
      Update.remove();
-   }
   return false;
+}});
+
+Meteor.methods({get500px: function () {
+  this.unblock();
+
+  var fivehundredpxParams = {
+    consumer_key : "sDWHPHnEiDj20gDLVWPlu2jZtFbkO8DWu7ekFfvo",
+    feature : "popular"
+  };
+
+  var url = "https://api.500px.com/v1/photos";
+  if (typeof searchTerm == "string") {
+    fivehundredpxParams.only = searchTerm;
+  } 
+  
+  //Pass in the API name, the URL and any required parameters and get a json object back.
+  var getAPIData = Meteor.call("getAPIData","500PX",fivehundredpxParams,url); 
+
+    resultJSON = getAPIData.photos;
+     for (photoIndex in resultJSON) {
+      photo = resultJSON[photoIndex];
+      if (Photos.findOne({url:photo.image_url}) == null) {
+        photo.url = photo.image_url;
+        photo.source = "500px";
+        photo.date = Date.now();
+        console.log("Inserting image: "+photo.url);
+        console.log("Total images: " +Photos.find().count());
+        while(Photos.find().count() > 20) {
+          oldestPhoto = Photos.findOne({}, {sort: {date:1}});
+          console.log("Deleting oldest image: "+oldestPhoto.url);
+          Photos.remove({url:oldestPhoto.url});
+        }
+        Photos.insert(photo);
+      }
+     }
+
+     // Signal masonry refresh
+     Update.insert({go:1});
+     Update.remove();
+   
+
+  return false;
+}});
+
+
+
+
+
+
+
+Meteor.methods({getAPIData: function (whatAPI,params,url) {
+  this.unblock();
+  console.log("Fetching data from "+whatAPI+" using the general API caller...");
+
+  var result = Meteor.http.call("GET", url, {params: params});
+  
+  if (result.statusCode === 200) {
+    console.log("Result.statusCode: " + result.statusCode);
+    if (typeof result.data != undefined) {
+      resultJSON = result.data;
+    }
+    else if (typeof result.content != undefined) {
+      resultJSON = result.content;
+    } else {
+      //something is probably broken.
+      console.log("Something is broken because neither result.data or result.content was populated.");
+      resultJSON = "";
+    }
+
+   }
+  return resultJSON;
 }});
