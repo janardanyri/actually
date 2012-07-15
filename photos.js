@@ -1,3 +1,5 @@
+// Constants
+var animation_ms = 50;
 
 // {url (string)}
 Photos = new Meteor.Collection("photos");
@@ -6,12 +8,13 @@ Photos = new Meteor.Collection("photos");
 SidebarSelections = new Meteor.Collection("sidebar_selections");
 
 if (Meteor.is_client) {
-window.Photos = Photos;
-  addSidebarSelection = function (url) {
+  window.Photos = Photos;
+
+  addSidebarSelection = function (url, comment) {
     //SidebarSelections.update({url:url}, { $set: {date:$.now()}}, true ) // <- true means upsert
     // Upsert not working for some reason (maybe it's changed)
-    SidebarSelections.remove({url:url})
-    SidebarSelections.insert({url:url, date:$.now()}) 
+    //SidebarSelections.remove({url:url})
+    SidebarSelections.insert({url:url, comment:comment, date:$.now()}) 
   }
 
   Template.photofeed.photos = function () {
@@ -21,6 +24,13 @@ window.Photos = Photos;
   Template.sidebar.photos = function () {
     return SidebarSelections.find({}, {sort: {date:-1}}); //, {sort: {score: -1, name: 1}});
   };
+
+  Template.chatsubmit.events = {
+    'click': function (e) {
+      addSidebarSelection(null, $("#chatbox").val())
+      $("#chatbox").val('');
+    }
+  }
 
   Template.photofeed.photofeed_callback = function () {
     Meteor.defer(function () {
@@ -33,8 +43,8 @@ window.Photos = Photos;
           isAnimated: true,
           cornerStampSelector: '.corner-stamp',
           animationOptions: {
-            duration: 50,
-            easing: 'linear',
+            duration: animation_ms,
+            easing: 'swing',
             queue: false
           }
         });
@@ -44,7 +54,11 @@ window.Photos = Photos;
     // return nothing
   };
 
-
+  function scroll_to(selector) {
+    var top = document.body.scrollTop;
+    var moveBy = $(selector).position().top - top - 100;
+      $('html,body').animate({scrollTop: top+moveBy}, 150, 'swing');
+  }
 
   Template.photo.events = {
     'click': function (e) {
@@ -54,17 +68,19 @@ window.Photos = Photos;
           shrinkPhoto = $('#'+Session.get("highlighted"))
           //shrinkPhoto.css('margin','0 -300px 0 -300px');
           shrinkPhoto.removeClass('highlighted');
-          shrinkPhoto.animate({width:220}, 50, function() {
+          shrinkPhoto.animate({width:220}, animation_ms, function() {
             photofeed.masonry('reload')
-           });
+          });
        }
        if(Session.get("highlighted") != this._id) { // We're blowing up a new image
-         bigPhoto = $('#'+this._id);
+         bigPhotoSelector = '#'+this._id;
+         bigPhoto = $(bigPhotoSelector);
          //bigPhoto.css('margin','0 300px 0 300px');
          bigPhoto.addClass('highlighted')
-         bigPhoto.animate({width:680}, 50, function() {
+         bigPhoto.animate({width:680}, animation_ms, function() {
            photofeed.masonry('reload')
-         });
+           setTimeout('scroll_to("'+bigPhotoSelector+'");',animation_ms*8);
+        });
          Session.set("highlighted", this._id)
       } else { // We're shrinking the highlighted image
         Session.set("highlighted", null);

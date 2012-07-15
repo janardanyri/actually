@@ -8,6 +8,7 @@
 <body>
   {{> photofeed}}
   {{> sidebar}}
+  {{> footer}}
 </body>
 
 <template name="photofeed">
@@ -24,9 +25,21 @@
 <template name="sidebar">
   <div id="sidebar">
     {{#each photos}}
-      {{> photo}}<br>
+      {{> sidephoto}}<br>
     {{/each}}
   </div>
+</template>
+
+<template name="footer">
+	<div id="footer">
+		<!-- <img id="chatphoto" src="blank.gif"> -->
+		<input id="chatbox" type="textbox" width="500">
+		{{> chatsubmit}}
+	</div>
+</template>
+
+<template name="chatsubmit">
+	<input id="chatsubmit" type="submit" name="Send">
 </template>
 
 <template name="selectedphotos">
@@ -37,4 +50,13 @@
   <div class="photo" id="{{_id}}">
     <img src="{{url}}" />
   </div>
+</template>
+
+<template name="sidephoto">
+  {{#if url}}
+    <img src="{{url}}" />
+  {{/if}}
+  {{#if comment}}
+    {{comment}}
+  {{/if}}
 </template>
