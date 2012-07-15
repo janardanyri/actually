@@ -63,6 +63,7 @@ if (Meteor.is_client) {
         SidebarSelections.remove({url:oldestSelection.url,date:oldestSelection.date});
       }
     }
+    setTimeout('$("#sidebarphotos").masonry("reload");', 200);
   }
 
   Template.photofeed.photos = function () {
