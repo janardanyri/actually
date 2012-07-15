@@ -14,7 +14,6 @@ body {
 	background-image: -o-linear-gradient(top, #535151, #3b3939);
 	background-image: -ms-linear-gradient(top, #535151, #3b3939);
 	background-image: linear-gradient(to bottom, #535151, #3b3939);	
-	z-index:99999;
 }
 
 #logo {
@@ -100,11 +99,11 @@ form {
   padding: 10px 0 0 10px;
 }
 
+.photo {
+}
+
 .photo img {
-	padding-top: 10px;
-	padding-bottom: 30px;
-	padding-left: 10px;
-	padding-right: 10px;
+	padding: 10px 10px 30px 10px;
 	background-color: #ccc;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
