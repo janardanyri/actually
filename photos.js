@@ -13,11 +13,12 @@ if (Meteor.is_client) {
         $('#photofeed').masonry({
           // options
           itemSelector : '.photo',
-          columnWidth : 0,
+          columnWidth : 220,
+          gutterWidth: 10,
           isAnimated: true,
           cornerStampSelector: '.corner-stamp',
           animationOptions: {
-            duration: 150,
+            duration: 50,
             easing: 'linear',
             queue: false
           }
@@ -36,7 +37,7 @@ if (Meteor.is_client) {
           shrinkPhoto = $('#'+Session.get("highlighted"))
           //shrinkPhoto.css('margin','0 -300px 0 -300px');
           shrinkPhoto.removeClass('highlighted');
-          shrinkPhoto.animate({width:220, margin: 10}, 150, function() {
+          shrinkPhoto.animate({width:220}, 50, function() {
             photofeed.masonry('reload')
            });
        }
@@ -44,7 +45,7 @@ if (Meteor.is_client) {
          bigPhoto = $('#'+this._id);
          //bigPhoto.css('margin','0 300px 0 300px');
          bigPhoto.addClass('highlighted')
-         bigPhoto.animate({width:500, margin: 10}, 150, function() {
+         bigPhoto.animate({width:680}, 50, function() {
            photofeed.masonry('reload')
          });
          Session.set("highlighted", this._id)
