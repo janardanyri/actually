@@ -1,5 +1,6 @@
 body {
 	height: 100%;
+	background-color: #333;
 }
 
 #header {
@@ -62,6 +63,7 @@ form {
 }
 
 #photofeed {
+	background-color: #1a1a1a;
 	background-image: url(wood.png);
     z-index: 5;
 }
