@@ -2,11 +2,13 @@
 
 #photofeed {
 	float: left;
-    width: 72%;
+    width: 70%;
 }
 #sidebar {
     float: right;
     width: 27%;
+    height: 1100px;
+    overflow-y: auto;
 }
 #sidebarphotos {
   width: 100%;

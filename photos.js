@@ -214,8 +214,13 @@ if (Meteor.is_client) {
   }
 
   $(function() {
+    $('#sidebar').css('height', $(window).height());
     $(window).scroll(function() {
-      $('#sidebar').css('margin-top', document.body.scrollTop-70);
+      if (document.body.scrollTop > 100) {
+        $('#sidebar').css('margin-top', document.body.scrollTop-70);
+      } else {
+        $('#sidebar').css('margin-top', 0);
+      }
     });
   });
 
