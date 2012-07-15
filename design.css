@@ -26,6 +26,7 @@ body {
 }
 
 #icons img {
+	margin-top: 10px;
 	padding-left: 7px;
 	vertical-align: middle;
 }
