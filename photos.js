@@ -156,7 +156,8 @@ if (Meteor.is_client) {
         photo.comments[photo.comments.length] = comment_text;
         SidebarSelections.update({_id:photo._id}, { $set: {comments: photo.comments }}, true);
         $('#photocomment_'+id).val(''); // Blank text entry
-      }
+        $('#sent-notice_'+id).addClass('sent-notice-sent');
+     }
     },
     'click img': function (e) {
       if ($('#photofeed').css('width') != '72%') {

@@ -39,6 +39,15 @@
   visibility: visible;
 }
 
+.sent-notice {
+  visibility: hidden;
+  color: orange;
+}
+
+.sent-notice-sent {
+	visibility: visible;
+}
+
 
 .photocomment {
   float: left;
