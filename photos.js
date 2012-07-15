@@ -28,7 +28,7 @@ if (Meteor.is_client) {
     while(SidebarSelections.find().count() > 20) {
       oldestSelection = SidebarSelections.findOne({}, {sort: {date:1}});
       console.log("Deleting oldest sidebar: "+oldestSelection.url)
-      SidebarSelections.remove({url:oldestSelection.url});
+      SidebarSelections.remove({url:oldestSelection.url,date:oldestSelection.date});
     }
   }
 
