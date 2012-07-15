@@ -21,14 +21,16 @@ if (Meteor.is_client) {
   }
 
   addSidebarSelection = function (url, comment) {
-    //SidebarSelections.update({url:url}, { $set: {date:$.now()}}, true ) // <- true means upsert
-    // Upsert not working for some reason (maybe it's changed)
-    //SidebarSelections.remove({url:url})
-    SidebarSelections.insert({url:url, comment:comment, date:$.now()}) 
-    while(SidebarSelections.find().count() > 20) {
-      oldestSelection = SidebarSelections.findOne({}, {sort: {date:1}});
-      console.log("Deleting oldest sidebar: "+oldestSelection.url)
-      SidebarSelections.remove({url:oldestSelection.url,date:oldestSelection.date});
+    if(SidebarSelections.findOne({url:url}) != null) {
+      SidebarSelections.update({url:url}, { $set: {date:$.now()}})
+    } else {
+
+      SidebarSelections.insert({url:url, comment:comment, date:$.now()}) 
+      while(SidebarSelections.find().count() > 20) {
+        oldestSelection = SidebarSelections.findOne({}, {sort: {date:1}});
+        console.log("Deleting oldest sidebar: "+oldestSelection.url)
+        SidebarSelections.remove({url:oldestSelection.url,date:oldestSelection.date});
+      }
     }
   }
 
