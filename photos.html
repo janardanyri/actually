@@ -45,7 +45,7 @@
 
 <template name="sidebar">
   <div id="sidebar">
-  	<div id="sidephotos">
+  	<div class="sidebarphotos">
 	  	{{#each photos}}
    	  		{{> sidephoto}}<br>
    	  	{{/each}}
@@ -80,6 +80,13 @@
     <div class="photo" id="{{_id}}">
       <img src="{{url}}" />
     </div>
+    <div class="comment">
+    	<span class="username">diklein</span> SUP BRO
+    	<br />
+    	<span class="username">jackmama</span> Seriously I have no idea what's going on right now. I am so high you guys.
+    	<br />
+    	<span class="add">&raquo; Add comment</span>
+      </div>
   {{/if}}
   {{#if comment}}
     {{comment}}

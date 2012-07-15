@@ -1,5 +1,6 @@
 body {
 	height: 100%;
+	background-color: #333;
 }
 
 #header {
@@ -62,6 +63,7 @@ form {
 }
 
 #photofeed {
+	background-color: #1a1a1a;
 	background-image: url(wood.png);
     z-index: 5;
 }
@@ -74,12 +76,16 @@ form {
 	z-index: -1;
 	height: 100%;
 	padding-top: 10px;
+	text-align: center;
 }
 
+.sidebarphotos {
+	display: inline-block;
+}
+
+
 #sidebar .photo img {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0px auto;
 	background-color: #F26739;
 }
 
@@ -92,7 +98,7 @@ form {
 	padding-bottom: 30px;
 	padding-left: 10px;
 	padding-right: 10px;
-	background-color: white;
+	background-color: #ccc;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
@@ -100,11 +106,19 @@ form {
 }
 
 
+.comment {
+	color: white;
+	text-align: left;
+	width: 240px;
+}
 
+.add {
+	color: #ff9900;
+}
 
-
-
-
+.username {
+	color: #999;
+}
 
 
 
