@@ -6,6 +6,7 @@ Photos = new Meteor.Collection("photos");
 
 // just used by the server to signal data update finished and masonry should reload (super hackish?)
 Update = new Meteor.Collection("update");
+UpdateSidebar = new Meteor.Collection("update_sidebar");
 
 // {url, date}
 SidebarSelections = new Meteor.Collection("sidebar_selections");
@@ -18,11 +19,18 @@ if (Meteor.is_client) {
     //Meteor.setInterval(invokeServerImageFetch,20 * 1000);
 
     reloadMasonry = function () { $('#photofeed').masonry('reload') }
+    reloadSideMasonry = function () { $('#sidebarphotos').masonry('reload') }
 
     Update.find().observe({
       added: function (user) {
         reloadMasonry();
-      },
+      }
+    });
+
+    UpdateSidebar.find().observe({
+      added: function (user) {
+        reloadSideMasonry();
+      }
     });
 
   });
@@ -64,7 +72,12 @@ if (Meteor.is_client) {
         SidebarSelections.remove({url:oldestSelection.url,date:oldestSelection.date});
       }
     }
-    setTimeout('$("#sidebarphotos").masonry("reload");', 200);
+
+         // Signal masonry refresh
+     UpdateSidebar.insert({go:1});
+     UpdateSidebar.remove();
+
+    //setTimeout('$("#sidebarphotos").masonry("reload");', 200);
   }
 
   Template.photofeed.photos = function () {
