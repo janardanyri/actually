@@ -2,6 +2,7 @@
 Photos = new Meteor.Collection("photos");
 
 if (Meteor.is_client) {
+
   Template.photofeed.photos = function () {
     return Photos.find({}); //, {sort: {score: -1, name: 1}});
   };
@@ -14,12 +15,12 @@ if (Meteor.is_client) {
           itemSelector : '.photo',
           columnWidth : 0,
           isAnimated: true,
+          cornerStampSelector: '.corner-stamp',
           animationOptions: {
             duration: 150,
             easing: 'linear',
             queue: false
-          },
-         cornerStampSelector: '.corner-stamp'
+          }
         });
 
       });
@@ -28,15 +29,12 @@ if (Meteor.is_client) {
   };
 
   Template.photo.events = {
-    'click': function () {
-      $('#dummy').removeClass('corner-stamp');
-
+    'click': function (e) {
       photofeed = $('#photofeed');
       
        if(Session.get("highlighted")) { // We have an existing blown up image
           shrinkPhoto = $('#'+Session.get("highlighted"))
           //shrinkPhoto.css('margin','0 -300px 0 -300px');
-          shrinkPhoto.removeClass('corner-stamp');
           shrinkPhoto.removeClass('highlighted');
           shrinkPhoto.animate({width:220, margin: 10}, 150, function() {
             photofeed.masonry('reload')
@@ -45,7 +43,6 @@ if (Meteor.is_client) {
        if(Session.get("highlighted") != this._id) { // We're blowing up a new image
          bigPhoto = $('#'+this._id);
          //bigPhoto.css('margin','0 300px 0 300px');
-         bigPhoto.addClass('corner-stamp')
          bigPhoto.addClass('highlighted')
          bigPhoto.animate({width:500, margin: 10}, 150, function() {
            photofeed.masonry('reload')
@@ -53,7 +50,6 @@ if (Meteor.is_client) {
          Session.set("highlighted", this._id)
       } else { // We're shrinking the highlighted image
         Session.set("highlighted", null);
-       $('#dummy').addClass('corner-stamp');
       }
       photofeed.masonry('reload')
     }
