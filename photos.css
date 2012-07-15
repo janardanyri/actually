@@ -32,10 +32,10 @@ header {
   width: 100%;
 }
 .add-comment {
-  display: none;
+  visibility: hidden;
 }
 .photo:hover .add-comment {
-  display: block;
+  visibility: visible;
 }
 .photocomment {
   float: left;
