@@ -198,6 +198,7 @@ if (Meteor.is_client) {
       setTimeout('scroll_to("'+bigPhotoSelector+'");',700);
       //});
       Session.set("highlighted", id)
+      $("#photocomment_"+id).focus()
    } else { // We're shrinking the highlighted image
      Session.set("highlighted", null);
      setTimeout('$("#'+container.attr('id')+'").masonry("reload");', 200);

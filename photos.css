@@ -34,6 +34,12 @@
 .photo:hover .add-comment {
   visibility: visible;
 }
+
+.highlighted .add-comment {
+  visibility: visible;
+}
+
+
 .photocomment {
   float: left;
   width: 230px;
