@@ -5,6 +5,9 @@ if (Meteor.is_client) {
 		if(DBPhotos.find().count() > 20) {
 			DBPhotos.remove({});
 		}
+		if(DBPhotos.find().count() < 20) {
+	
+	
 		var myData = {};
 		var flickrParams = {
 		tagmode: "any",
@@ -32,11 +35,9 @@ if (Meteor.is_client) {
 					};
 				});
 		 	});
+		};
 	}
-	if(DBPhotos.find().count() < 20) {
-	getFlickrData();
-	photofeed.masonry('reload');
-	};
+	
 
 }
 
