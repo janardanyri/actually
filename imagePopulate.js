@@ -1,11 +1,10 @@
 //imagePopulate.js
 if (Meteor.is_client) {
 	function getFlickrData(searchTerm) {
-		DBPhotos = new Meteor.Collection("photos");
-		if(DBPhotos.find().count() > 20) {
-			DBPhotos.remove({});
+		if(Photos.find().count() > 20) {
+			Photos.remove({});
 		}
-		if(DBPhotos.find().count() < 20) {
+		if(Photos.find().count() < 20) {
 	
 	
 		var myData = {};
@@ -25,20 +24,19 @@ if (Meteor.is_client) {
 				$.extend(true,myData,data);
 			});
 
-		flickrRequest.success(function() { 
+		flickrRequest.complete(function() { 
 			//clone into returnobject on success
 			$.each(myData.items, function(i,item) {
-					if (DBPhotos.findOne({url:item.media.m}) == null) {
-						alert("adding one")
+					if (Photos.findOne({url:item.media.m}) == null) {
 						item.url = item.media.m;
-						DBPhotos.insert(item);
+						Photos.insert(item);
 					};
 				});
 		 	});
 		};
 	}
 	
-
+	getFlickrData();
 }
 
 
