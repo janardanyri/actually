@@ -25,6 +25,11 @@ if (Meteor.is_client) {
     // Upsert not working for some reason (maybe it's changed)
     //SidebarSelections.remove({url:url})
     SidebarSelections.insert({url:url, comment:comment, date:$.now()}) 
+    while(SidebarSelections.find().count() > 20) {
+      oldestSelection = SidebarSelections.findOne({}, {sort: {date:1}});
+      console.log("Deleting oldest sidebar: "+oldestSelection.url)
+      SidebarSelections.remove({url:oldestSelection.url});
+    }
   }
 
   Template.photofeed.photos = function () {
@@ -77,13 +82,13 @@ if (Meteor.is_client) {
   Template.photo.events = {
     'click': function (e) {
       photofeed = $('#photofeed');
-      addSidebarSelection(this.url);
        if(Session.get("highlighted")) { // We have an existing blown up image
           shrinkPhoto = $('#'+Session.get("highlighted"))
           shrinkPhoto.removeClass('highlighted');
           shrinkPhoto.animate({width:220}, animation_ms);
        }
        if(Session.get("highlighted") != this._id) { // We're blowing up a new image
+         addSidebarSelection(this.url);
          bigPhotoSelector = '#'+this._id;
          bigPhoto = $(bigPhotoSelector);
          bigPhoto.addClass('highlighted')
