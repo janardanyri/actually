@@ -24,13 +24,10 @@ if (Meteor.is_client) {
 		flickrRequest.complete(function() { 
 			//clone into returnobject on success
 			//Check photos
-			alert("This many photos: " + Photos.find().count());
 			if(Photos.find().count() > 20) {
-				alert('Killing Photos');
 				Photos.remove({});
 			}
 			if(Photos.find().count() < 20) {
-				alert('Adding Photos');
 				$.each(myData.items, function(i,item) {
 						if (Photos.findOne({url:item.media.m}) == null) {
 							item.url = item.media.m;
