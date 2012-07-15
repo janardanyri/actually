@@ -1,3 +1,5 @@
+// Constants
+var animation_ms = 50;
 
 // {url (string)}
 Photos = new Meteor.Collection("photos");
@@ -41,8 +43,8 @@ if (Meteor.is_client) {
           isAnimated: true,
           cornerStampSelector: '.corner-stamp',
           animationOptions: {
-            duration: 50,
-            easing: 'linear',
+            duration: animation_ms,
+            easing: 'swing',
             queue: false
           }
         });
@@ -52,7 +54,11 @@ if (Meteor.is_client) {
     // return nothing
   };
 
-
+  function scroll_to(selector) {
+    var top = document.body.scrollTop;
+    var moveBy = $(selector).position().top - top - 100;
+      $('html,body').animate({scrollTop: top+moveBy}, 150, 'swing');
+  }
 
   Template.photo.events = {
     'click': function (e) {
@@ -62,17 +68,19 @@ if (Meteor.is_client) {
           shrinkPhoto = $('#'+Session.get("highlighted"))
           //shrinkPhoto.css('margin','0 -300px 0 -300px');
           shrinkPhoto.removeClass('highlighted');
-          shrinkPhoto.animate({width:220}, 50, function() {
+          shrinkPhoto.animate({width:220}, animation_ms, function() {
             photofeed.masonry('reload')
-           });
+          });
        }
        if(Session.get("highlighted") != this._id) { // We're blowing up a new image
-         bigPhoto = $('#'+this._id);
+         bigPhotoSelector = '#'+this._id;
+         bigPhoto = $(bigPhotoSelector);
          //bigPhoto.css('margin','0 300px 0 300px');
          bigPhoto.addClass('highlighted')
-         bigPhoto.animate({width:680}, 50, function() {
+         bigPhoto.animate({width:680}, animation_ms, function() {
            photofeed.masonry('reload')
-         });
+           setTimeout('scroll_to("'+bigPhotoSelector+'");',animation_ms*8);
+        });
          Session.set("highlighted", this._id)
       } else { // We're shrinking the highlighted image
         Session.set("highlighted", null);
