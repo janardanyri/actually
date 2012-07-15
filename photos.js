@@ -44,6 +44,8 @@ if (Meteor.is_client) {
     // return nothing
   };
 
+
+
   Template.photo.events = {
     'click': function (e) {
       photofeed = $('#photofeed');

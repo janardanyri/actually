@@ -21,13 +21,16 @@ if (Meteor.is_client) {
 		flickrRequest.success(function() { 
 			//clone into returnobject on success
 			$.each(myData.items, function(i,item) {
-				
+
 					item.url = item.media.m;
 					Photos.insert(item);
 				});
 		 	});
 	}
+	if(Photos.find().count() >= 5) {
 	getFlickrData("something");
+	photofeed.masonry('reload');
+	};
 }
 
 
