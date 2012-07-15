@@ -45,9 +45,11 @@
 
 <template name="sidebar">
   <div id="sidebar">
-    {{#each photos}}
-      {{> sidephoto}}<br>
-    {{/each}}
+  	<div id="sidephotos">
+	  	{{#each photos}}
+   	  		{{> sidephoto}}<br>
+   	  	{{/each}}
+  	</div>
   </div>
 </template>
 
