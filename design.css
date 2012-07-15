@@ -1,3 +1,7 @@
+body {
+	height: 100%;
+}
+
 #header {
 	height: 80px;
 	width: 100%;
@@ -68,10 +72,15 @@ form {
 	-moz-box-shadow: 0 7px 10px black;
 	box-shadow: 0 7px 10px black;
 	z-index: -1;
+	height: 100%;
+	padding-top: 10px;
 }
 
-#sidephotos {
-	margin: 0 auto;
+#sidebar .photo img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #F26739;
 }
 
 #photofeed {
