@@ -212,6 +212,12 @@ if (Meteor.is_client) {
    container.masonry('reload')
   }
 
+  $(function() {
+    $(window).scroll(function() {
+      $('#sidebar').css('margin-top', document.body.scrollTop-70);
+    });
+  });
+
 }
 
 
