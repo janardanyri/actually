@@ -1,20 +1,28 @@
 <head>
   <script src="https://raw.github.com/desandro/masonry/master/jquery.masonry.min.js"></script>
-  <title>photos</title>
+  <title>Actually</title>
 </head>
 
 <body>
   {{> photofeed}}
+  {{> sidebar}}
 </body>
 
 <template name="photofeed">
-  Actually - Awesome photos
   <div id="photofeed">
   <div id="dummy" class="corner-stamp">
   </div>
     {{#each photos}}
       {{> photo}}
       {{photofeed_callback}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="sidebar">
+  <div id="sidebar">
+    {{#each photos}}
+      {{> photo}}<br>
     {{/each}}
   </div>
 </template>

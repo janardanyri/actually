@@ -1,7 +1,11 @@
 /* CSS declarations go here */
 
-#container {
-    float: left;
+#banner {
+
+}
+
+#photofeed {
+	float: left;
     width: 70%;
 }
 #sidebar {

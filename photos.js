@@ -1,10 +1,25 @@
 
+// {url (string)}
 Photos = new Meteor.Collection("photos");
+
+// {url, date}
+SidebarSelections = new Meteor.Collection("sidebar_selections");
 
 if (Meteor.is_client) {
 
+  addSidebarSelection = function (url) {
+    //SidebarSelections.update({url:url}, { $set: {date:$.now()}}, true ) // <- true means upsert
+    // Upsert not working for some reason (maybe it's changed)
+    SidebarSelections.remove({url:url})
+    SidebarSelections.insert({url:url, date:$.now()}) 
+  }
+
   Template.photofeed.photos = function () {
     return Photos.find({}); //, {sort: {score: -1, name: 1}});
+  };
+
+  Template.sidebar.photos = function () {
+    return SidebarSelections.find({}, {sort: {date:-1}}); //, {sort: {score: -1, name: 1}});
   };
 
   Template.photofeed.photofeed_callback = function () {
@@ -32,7 +47,7 @@ if (Meteor.is_client) {
   Template.photo.events = {
     'click': function (e) {
       photofeed = $('#photofeed');
-      
+      addSidebarSelection(this.url);
        if(Session.get("highlighted")) { // We have an existing blown up image
           shrinkPhoto = $('#'+Session.get("highlighted"))
           //shrinkPhoto.css('margin','0 -300px 0 -300px');
