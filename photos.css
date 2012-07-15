@@ -38,7 +38,8 @@ header {
   display: block;
 }
 .photocomment {
-  width: 50px;
+  float: left;
+  width: 230px;
 }
 
 #footer {
