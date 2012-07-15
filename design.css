@@ -66,6 +66,7 @@ form {
 	background-color: #1a1a1a;
 	background-image: url(wood.png);
     z-index: 5;
+    position: relative;
 }
 
 #sidebar {
@@ -118,7 +119,29 @@ form {
 
 .username {
 	color: #999;
+	text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+	font-weight: bold;
 }
 
+#footer {
+	font-size: 12px;
+	color: rgba(255,255,255,.8);
+	text-shadow: 0 -1px 0 rgba(0,0,0,.5);
+	position: fixed;
+	margin-left: -5px;
+	padding: 5px 5px 0 5px;
+	padding-top: 5px;
+	padding-right: 5px;
+	bottom: 0;
+	border-radius: 0 7px 0 0;
+	background-color: #fff;
+	box-shadow: 0 0 5px rgba(0,0,0,.75), 3px 4px 5px rgba(0,0,0,.50);
+	background-image: -webkit-gradient(linear, center top, center bottom, from(#cf4196), to(#9c3071));
+	background-image: -webkit-linear-gradient(top, #cf4196, #9c3071);
+	background-image: -moz-linear-gradient(top, #cf4196, #9c3071);
+	background-image: -o-linear-gradient(top, #cf4196, #9c3071);
+	background-image: -ms-linear-gradient(top, #cf4196, #9c3071);
+	background-image: linear-gradient(to bottom, #cf4196, #9c3071);
+}
 
 
