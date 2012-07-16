@@ -18,13 +18,13 @@ if (Meteor.is_client) {
     Session.set("photoSet", "Instagram")
     //Meteor.setInterval(invokeServerImageFetch,20 * 1000);
 
+    // Just hax it! - just do once : dmc : 7/16/12
     reloadMasonry = function () { $('#photofeed').masonry('reload') }
     reloadSideMasonry = function () { $('#sidebarphotos').masonry('reload') }
-
-    // Just hax it!
-
-    Meteor.setInterval(reloadMasonry, 5000)
-    Meteor.setInterval(reloadSideMasonry, 2000)
+    //Meteor.setInterval(reloadMasonry, 5000)
+    //Meteor.setInterval(reloadSideMasonry, 2000)
+    setTimeout('reloadMasonry();', 5000);
+    setTimeout('reloadSideMasonry();', 5000);
 
     Update.find().observe({
       added: function (user) {
